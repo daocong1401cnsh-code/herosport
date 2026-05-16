@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-// ===================== DATA =====================
+// ===================== MẢNG DỮ LIỆU CHUẨN ĐỒNG BỘ =====================
 const members = [
   { initials: "PD", name: "Phạm Tấn Dũng", role: "Trưởng phòng", status: "online", type: "Full Time", color: "#fff7ed", textColor: "#c2410c" },
   { initials: "NL", name: "Nguyễn Thành Long", role: "Camera & Editor", status: "online", type: "Partime", color: "#eff6ff", textColor: "#1d4ed8" },
@@ -25,65 +25,23 @@ const initTasks = [
 ];
 
 const initCampaigns = [
-  { id: 1, name: "Flash Sale 5/5", status: "done", budget: "5.000.000", spent: "4.800.000", channel: "TikTok Shop", start: "2025-05-01", end: "2025-05-05", result: "120% KPI", color: "#16a34a" },
-  { id: 2, name: "Ra mắt BST Li-Ning Hè 2025", status: "active", budget: "8.000.000", spent: "3.200.000", channel: "All", start: "2025-05-10", end: "2025-05-25", result: "Đang chạy", color: "#E2401C" },
-  { id: 3, name: "Affiliate TikTok tháng 5", status: "active", budget: "2.000.000", spent: "900.000", channel: "TikTok Affiliate", start: "2025-05-01", end: "2025-05-31", result: "Đang chạy", color: "#E2401C" },
-  { id: 4, name: "SEO Website tháng 5", status: "active", budget: "1.500.000", spent: "500.000", channel: "Website", start: "2025-05-01", end: "2025-05-31", result: "Đang chạy", color: "#E2401C" },
-  { id: 5, name: "Mid-year Sale 6/6", status: "planned", budget: "10.000.000", spent: "0", channel: "All", start: "2025-06-01", end: "2025-06-08", result: "Chưa bắt đầu", color: "#64748b" },
-];
-
-const calendarEvents = [
-  { date: "2025-05-16", type: "live", title: "Live TikTok 17h & 20h", member: "TH + DS" },
-  { date: "2025-05-17", type: "content", title: "Đăng video Affiliate Mixsport", member: "LC" },
-  { date: "2025-05-18", type: "task", title: "Deadline quản trị Shopee", member: "LH" },
-  { date: "2025-05-19", type: "video", title: "Nộp video sản phẩm mới", member: "NL" },
-  { date: "2025-05-20", type: "task", title: "Cập nhật sản phẩm website", member: "PT" },
-  { date: "2025-05-21", type: "live", title: "Live TikTok chiều & tối", member: "TH + DS + VD" },
-  { date: "2025-05-22", type: "report", title: "Báo cáo tuần cho trưởng phòng", member: "All" },
-  { date: "2025-05-23", type: "content", title: "Đăng bài Fanpage Li-Ning", member: "LC" },
-  { date: "2025-05-24", type: "live", title: "Live TikTok cuối tuần", member: "DS + VD" },
-  { date: "2025-05-25", type: "design", title: "Banner Flash Sale tháng 6", member: "NG" },
-];
-
-const analyticsKPI = [
-  { label: "Doanh số TikTok Shop", value: "245.600.000", unit: "VNĐ", change: "+18%", up: true, icon: "🛍" },
-  { label: "Doanh số Shopee", value: "132.400.000", unit: "VNĐ", change: "+12%", up: true, icon: "🏪" },
-  { label: "Lượt xem TikTok", value: "1.240.000", unit: "views", change: "+35%", up: true, icon: "👁" },
-  { label: "Chi phí quảng cáo", value: "8.700.000", unit: "VNĐ", change: "+5%", up: false, icon: "📣" },
-  { label: "Video đã đăng", value: "42", unit: "video", change: "+8", up: true, icon: "🎬" },
-  { label: "Đơn hàng website", value: "318", unit: "đơn", change: "+22%", up: true, icon: "🌐" },
+  { id: 1, name: "Flash Sale 5/5", status: "done", budget: "5.000.000", spent: "4.800.000", channel: "TikTok Shop", start: "2025-05-01", end: "2025-05-05", result: "120% KPI" },
+  { id: 2, name: "Ra mắt BST Li-Ning Hè 2025", status: "active", budget: "8.000.000", spent: "3.200.000", channel: "All", start: "2025-05-10", end: "2025-05-25", result: "Đang chạy" },
+  { id: 3, name: "Affiliate TikTok tháng 5", status: "active", budget: "2.000.000", spent: "900.000", channel: "TikTok Affiliate", start: "2025-05-01", end: "2025-05-31", result: "Đang chạy" },
 ];
 
 const channels = [
-  { name: "TikTok Shop", pct: 85, color: "#333", reach: "Kênh chính" },
-  { name: "Shopee", pct: 72, color: "#EE4D2D", reach: "Sàn TMĐT" },
-  { name: "Website", pct: 45, color: "#1877F2", reach: "Web chính thức" },
-  { name: "TikTok Affiliate", pct: 68, color: "#E2401C", reach: "Mixsport" },
+  { name: "TikTok Shop", pct: 85, color: "#111827", sub: "Mktroom" },
+  { name: "Shopee", pct: 72, color: "#ea4335", sub: "Sàn TMĐT" },
+  { name: "Website", pct: 45, color: "#1ae1ff", sub: "Web chính thức" },
+  { name: "TikTok Affiliate", pct: 68, color: "#ff4d2d", sub: "Mixsport" },
 ];
 
 const statusMap: any = {
-  todo:   { label: "Chờ làm",    bg: "#f1f5f9", color: "#64748b" },
-  doing:  { label: "Đang làm",   bg: "#fff7ed", color: "#c2410c" },
-  review: { label: "Đang duyệt", bg: "#eff6ff", color: "#1d4ed8" },
-  done:   { label: "Hoàn thành", bg: "#f0fdf4", color: "#16a34a" },
-};
-
-const onlineColor: any = { online: "#22c55e", busy: "#ea580c", away: "#eab308" };
-const onlineLabel: any = { online: "● Online", busy: "● Bận", away: "● Vắng" };
-
-const eventTypeStyle: any = {
-  live:    { bg: "#fff0f0", color: "#E2401C" },
-  content: { bg: "#f0f9ff", color: "#0284c7" },
-  video:   { bg: "#f5f3ff", color: "#7c3aed" },
-  task:    { bg: "#fff7ed", color: "#c2410c" },
-  report:  { bg: "#f0fdf4", color: "#16a34a" },
-  design:  { bg: "#fdf4ff", color: "#9333ea" },
-};
-
-const campaignStatusStyle: any = {
-  done:    { label: "Hoàn thành", bg: "#f0fdf4", color: "#16a34a" },
-  active:  { label: "Đang chạy",  bg: "#fff7ed", color: "#c2410c" },
-  planned: { label: "Sắp tới",    bg: "#f1f5f9", color: "#64748b" },
+  todo:   { label: "Chờ làm",    bg: "#f1f5f9", color: "#64748b", border: "#cbd5e1" },
+  doing:  { label: "Đang làm",   bg: "#fff7ed", color: "#ea580c", border: "#fed7aa" },
+  review: { label: "Đang duyệt", bg: "#eff6ff", color: "#2563eb", border: "#bfdbfe" },
+  done:   { label: "Hoàn thành", bg: "#f0fdf4", color: "#16a34a", border: "#bbf7d0" },
 };
 
 export default function Home() {
@@ -93,7 +51,6 @@ export default function Home() {
   const [newTaskName, setNewTaskName] = useState("");
   const [newTaskAssignee, setNewTaskAssignee] = useState(members[0].name);
 
-  // Logic thêm task
   const handleAddTask = (e: any) => {
     e.preventDefault();
     if (!newTaskName.trim()) return;
@@ -103,7 +60,7 @@ export default function Home() {
       id: Date.now(),
       icon: "📌",
       name: newTaskName,
-      sub: `${newTaskAssignee} • Nhân viên`,
+      sub: `${newTaskAssignee} • Thành viên`,
       status: "todo",
       due: "Hôm nay",
       assignee: matchedMember ? matchedMember.initials : "PD"
@@ -114,215 +71,254 @@ export default function Home() {
     setShowModal(false);
   };
 
-  // Logic đổi nhanh trạng thái task
-  const toggleStatus = (id: number) => {
-    setTasks(tasks.map(t => {
-      if (t.id === id) {
-        const order = ["todo", "doing", "review", "done"];
-        const nextIdx = (order.indexOf(t.status) + 1) % order.length;
-        return { ...t, status: order[nextIdx] };
-      }
-      return t;
-    }));
+  const changeStatus = (id: number, currentStatus: string) => {
+    const order = ["todo", "doing", "review", "done"];
+    const nextIdx = (order.indexOf(currentStatus) + 1) % order.length;
+    setTasks(tasks.map(t => t.id === id ? { ...t, status: order[nextIdx] } : t));
   };
 
-  const doneCount = tasks.filter(t => t.status === "done").length;
+  const removeTask = (id: number) => {
+    setTasks(tasks.filter(t => t.id !== id));
+  };
 
   return (
-    <div style={{ backgroundColor: "#f8f9fa", minHeight: "100vh", fontFamily: "sans-serif", padding: "20px", display: "flex", gap: "20px" }}>
+    <div style={{ backgroundColor: "#fcfcfd", minHeight: "100vh", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", padding: "16px", display: "flex", gap: "16px", color: "#1e293b" }}>
       
-      {/* SIDEBAR BÊN TRÁI */}
-      <div style={{ width: "260px", backgroundColor: "white", padding: "20px", borderRadius: "12px", boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}>
-        <h2 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "20px", color: "#111" }}>HERO SPORT - MKT</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          <div onClick={() => setActiveTab("overview")} style={{ padding: "10px 12px", backgroundColor: activeTab === "overview" ? "#fff5f5" : "transparent", borderRadius: "6px", fontWeight: "bold", color: activeTab === "overview" ? "#E2401C" : "#64748b", cursor: "pointer" }}>📊 Tổng quan</div>
-          <div onClick={() => setActiveTab("calendar")} style={{ padding: "10px 12px", backgroundColor: activeTab === "calendar" ? "#fff5f5" : "transparent", borderRadius: "6px", fontWeight: "bold", color: activeTab === "calendar" ? "#E2401C" : "#64748b", cursor: "pointer" }}>📅 Lịch trình ca trực</div>
-          <div onClick={() => setActiveTab("campaigns")} style={{ padding: "10px 12px", backgroundColor: activeTab === "campaigns" ? "#fff5f5" : "transparent", borderRadius: "6px", fontWeight: "bold", color: activeTab === "campaigns" ? "#E2401C" : "#64748b", cursor: "pointer" }}>🏁 Chiến dịch</div>
-          <div onClick={() => setActiveTab("kpi")} style={{ padding: "10px 12px", backgroundColor: activeTab === "kpi" ? "#fff5f5" : "transparent", borderRadius: "6px", fontWeight: "bold", color: activeTab === "kpi" ? "#E2401C" : "#64748b", cursor: "pointer" }}>📈 Phân tích KPI</div>
+      {/* 1. SIDEBAR BÊN TRÁI - HOÀN THIỆN ĐÚNG THIẾT KẾ CỨNG CÁP */}
+      <div style={{ width: "240px", display: "flex", flexDirection: "column", gap: "24px" }}>
+        <div style={{ backgroundColor: "white", padding: "16px", borderRadius: "12px", border: "1px solid #f1f5f9", boxShadow: "0 1px 3px rgba(0,0,0,0.02)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+            <h2 style={{ fontSize: "15px", fontWeight: "800", letterSpacing: "0.3px", margin: 0 }}>HERO SPORT - MKT</h2>
+            <span style={{ backgroundColor: "#ff4d4f", color: "white", padding: "1px 5px", fontSize: "10px", fontWeight: "bold", borderRadius: "4px" }}>TRỰC TUYẾN</span>
+          </div>
+          <p style={{ margin: 0, color: "#94a3b8", fontSize: "11px" }}>Phòng marketing Hero Sport</p>
+
+          {/* MENU ĐIỀU HƯỚNG MÀU CAM THEO THIẾT KẾ MẪU */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px", marginTop: "20px" }}>
+            {[
+              { id: "overview", label: "Tổng quan", icon: "📊" },
+              { id: "quytrinh", label: "Quy trình", icon: "📋" },
+              { id: "campaigns", label: "Chiến dịch", icon: "📢" },
+              { id: "calendar", label: "Lịch nội dung", icon: "📅" },
+              { id: "kpi", label: "Phân tích", icon: "📉" },
+            ].map(tab => (
+              <div
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  display: "flex", alignItems: "center", gap: "10px", padding: "9px 12px", borderRadius: "8px", fontSize: "13px", fontWeight: "6px", cursor: "pointer", transition: "0.2s",
+                  backgroundColor: activeTab === tab.id ? "#fff5f5" : "transparent",
+                  color: activeTab === tab.id ? "#ff4d4f" : "#475569"
+                }}
+              >
+                <span style={{ fontSize: "14px" }}>{tab.icon}</span>
+                <span style={{ fontWeight: activeTab === tab.id ? "bold" : "normal" }}>{tab.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* THÀNH VIÊN */}
-        <h3 style={{ fontSize: "12px", color: "#94a3b8", marginTop: "30px", marginBottom: "12px", letterSpacing: "0.5px" }}>👥 THÀNH VIÊN ({members.length})</h3>
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {members.map((m, idx) => (
-            <div key={idx} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <div style={{ width: "32px", height: "32px", borderRadius: "50%", backgroundColor: m.color, color: m.textColor, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", fontSize: "12px" }}>{m.initials}</div>
-                <div>
-                  <div style={{ fontWeight: "bold", fontSize: "13px", color: "#334155" }}>{m.name}</div>
-                  <div style={{ color: "#64748b", fontSize: "11px" }}>{m.role}</div>
-                </div>
-              </div>
-              <span style={{ fontSize: "11px", color: onlineColor[m.status] }}>{onlineLabel[m.status]}</span>
+        {/* THÔNG TIN NHÂN SỰ CHỈ SỐ PHÒNG */}
+        <div style={{ backgroundColor: "white", padding: "16px", borderRadius: "12px", border: "1px solid #f1f5f9", fontSize: "12px", color: "#64748b" }}>
+          <div style={{ fontWeight: "bold", color: "#1e293b", marginBottom: "8px" }}>NHÂN SỰ</div>
+          <div>Tổng: <strong style={{ color: "#1e293b" }}>9 người</strong></div>
+          <div style={{ marginTop: "4px" }}>Full Time: 3 • Partime: 6</div>
+          
+          <div style={{ borderTop: "1px dashed #e2e8f0", marginTop: "12px", paddingTop: "12px" }}>
+            <div style={{ fontWeight: "bold", color: "#ff4d4f", marginBottom: "6px" }}>⚠️ SẮP ĐẾN HẠN</div>
+            <div style={{ color: "#ef4444", lineHeight: "1.4" }}>
+              • Chờ duyệt: "Edit video Affiliate TikTok Mixsport"<br/>
+              • Hôm nay: "Ca Live TikTok chiều nay 17h"<br/>
+              • Hôm nay: "Ca Live TikTok tối 20h"
             </div>
-          ))}
+          </div>
         </div>
       </div>
 
-      {/* KHÔNG GIAN LÀM VIỆC CHÍNH */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "20px" }}>
+      {/* 2. KHU VỰC KHÔNG GIAN TRUNG TÂM & BÊN PHẢI */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "16px" }}>
         
-        {/* TOPBAR HEADER */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: "white", padding: "15px 20px", borderRadius: "12px", boxShadow: "0 1px 3px rgba(0,0,0,0.02)" }}>
-          <div>
-            <h1 style={{ margin: 0, fontSize: "18px", fontWeight: "bold", color: "#1e293b" }}>Phòng marketing Hero Sport</h1>
-            <span style={{ backgroundColor: "#fef2f2", color: "#ef4444", padding: "2px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: "bold" }}>● TRỰC TUYẾN</span>
+        {/* THANH TOPBAR ĐẦU TRANG */}
+        <div style={{ backgroundColor: "white", padding: "12px 20px", borderRadius: "12px", border: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{ width: "32px", height: "32px", backgroundColor: "#f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>⚙️</div>
+            <span style={{ fontWeight: "700", fontSize: "15px" }}>Mktroom .JSX</span>
           </div>
-          <button onClick={() => setShowModal(true)} style={{ backgroundColor: "#E2401C", color: "white", border: "none", padding: "10px 18px", borderRadius: "8px", fontWeight: "bold", cursor: "pointer" }}>+ Thêm task</button>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <span style={{ fontSize: "12px", color: "#22c55e", fontWeight: "bold" }}>● 9 Online</span>
+            <button onClick={() => setShowModal(true)} style={{ backgroundColor: "#ff4d4f", color: "white", border: "none", padding: "8px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: "bold", cursor: "pointer", boxShadow: "0 2px 4px rgba(255,77,79,0.2)" }}>+ Thêm task</button>
+          </div>
         </div>
 
-        {/* NỘI DUNG CHUYỂN ĐỔI TAB */}
-        {activeTab === "overview" && (
-          <>
-            {/* THỐNG KÊ SỐ LIỆU ĐỘNG */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "15px" }}>
-              <div style={{ backgroundColor: "white", padding: "18px", borderRadius: "12px", boxShadow: "0 1px 2px rgba(0,0,0,0.02)" }}>
-                <div style={{ color: "#64748b", fontSize: "13px" }}>Nhân sự phòng</div>
-                <div style={{ fontSize: "22px", fontWeight: "bold", marginTop: "6px", color: "#0f172a" }}>{members.length} người</div>
-              </div>
-              <div style={{ backgroundColor: "white", padding: "18px", borderRadius: "12px", boxShadow: "0 1px 2px rgba(0,0,0,0.02)" }}>
-                <div style={{ color: "#64748b", fontSize: "13px" }}>Vị trí chờ duyệt</div>
-                <div style={{ fontSize: "22px", fontWeight: "bold", marginTop: "6px", color: "#0f172a" }}>2 chỗ</div>
-              </div>
-              <div style={{ backgroundColor: "white", padding: "18px", borderRadius: "12px", boxShadow: "0 1px 2px rgba(0,0,0,0.02)" }}>
-                <div style={{ color: "#64748b", fontSize: "13px" }}>Ca Live hôm nay</div>
-                <div style={{ fontSize: "22px", fontWeight: "bold", marginTop: "6px", color: "#0f172a" }}>2 ca</div>
-              </div>
-              <div style={{ backgroundColor: "white", padding: "18px", borderRadius: "12px", boxShadow: "0 1px 2px rgba(0,0,0,0.02)" }}>
-                <div style={{ color: "#64748b", fontSize: "13px" }}>Hoàn thành</div>
-                <div style={{ fontSize: "22px", fontWeight: "bold", marginTop: "6px", color: "#0f172a" }}>{doneCount}/{tasks.length} công việc</div>
-              </div>
-            </div>
+        {/* NỘI DUNG CHÍNH ĐỒNG BỘ THEO TAB */}
+        <div style={{ display: "flex", gap: "16px", flex: 1 }}>
+          
+          {/* CỘT GIỮA: NỘI DUNG HIỂN THỊ CHÍNH */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "16px" }}>
+            {activeTab === "overview" && (
+              <>
+                {/* 4 Ô CHỈ SỐ THỐNG KÊ TRÊN CÙNG CHUẨN ĐỒNG BỘ */}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px" }}>
+                  {[
+                    { label: "Nhân sự MKT", value: "9 người", sub: "3 FT + 6 PT" },
+                    { label: "Task hôm nay", value: "2 chờ", sub: "3 đang chạy" },
+                    { label: "Ca Live hôm nay", value: "2 ca", sub: "17h & 20h" },
+                    { label: "Hoàn thành", value: `${tasks.filter(t=>t.status==='done').length}/${tasks.length}`, sub: `${Math.round((tasks.filter(t=>t.status==='done').length/tasks.length)*100)}% tiến độ` },
+                  ].map((card, i) => (
+                    <div key={i} style={{ backgroundColor: "white", padding: "14px 16px", borderRadius: "12px", border: "1px solid #f1f5f9" }}>
+                      <span style={{ color: "#94a3b8", fontSize: "11px", fontWeight: "600" }}>{card.label}</span>
+                      <div style={{ fontSize: "20px", fontWeight: "800", margin: "4px 0", color: "#0f172a" }}>{card.value}</div>
+                      <span style={{ color: "#94a3b8", fontSize: "11px" }}>{card.sub}</span>
+                    </div>
+                  ))}
+                </div>
 
-            {/* DANH SÁCH TASK VÀ TIẾN ĐỘ KÊNH */}
-            <div style={{ display: "flex", gap: "20px" }}>
-              <div style={{ flex: 2, backgroundColor: "white", padding: "20px", borderRadius: "12px" }}>
-                <h3 style={{ margin: "0 0 4px 0", fontSize: "15px", color: "#1e293b" }}>📋 Công việc đang thực hiện</h3>
-                <p style={{ margin: "0 0 15px 0", fontSize: "11px", color: "#94a3b8" }}>(Mẹo: Click nút trạng thái để đổi nhanh tiến độ)</p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                  {tasks.map((t) => (
-                    <div key={t.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px", border: "1px solid #f1f5f9", borderRadius: "8px" }}>
-                      <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-                        <span style={{ fontSize: "18px" }}>{t.icon}</span>
-                        <div>
-                          <div style={{ fontWeight: "bold", fontSize: "13px", color: "#334155" }}>{t.name}</div>
-                          <div style={{ color: "#64748b", fontSize: "11px" }}>{t.sub} • Hạn: {t.due}</div>
+                {/* DANH SÁCH TASK CÔNG VIỆC CÓ DROPDOWN CHỌN TRẠNG THÁI */}
+                <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "12px", border: "1px solid #f1f5f9" }}>
+                  <h3 style={{ margin: "0 0 16px 0", fontSize: "14px", fontWeight: "bold", display: "flex", alignItems: "center", gap: "8px" }}>📋 Công việc đang thực hiện</h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    {tasks.map((t) => (
+                      <div key={t.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", border: "1px solid #f8fafc", backgroundColor: "#fdfdfd", borderRadius: "8px", transition: "0.2s" }}>
+                        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+                          <span style={{ fontSize: "16px" }}>{t.icon}</span>
+                          <div>
+                            <div style={{ fontWeight: "700", fontSize: "13px", color: "#1e293b" }}>{t.name}</div>
+                            <div style={{ color: "#94a3b8", fontSize: "11px", marginTop: "2px" }}>{t.sub}</div>
+                          </div>
+                        </div>
+                        
+                        {/* CỤM CHỌN NHANH TRẠNG THÁI CÓ NÚT XÓA CHUẨN 100% */}
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <button
+                            onClick={() => changeStatus(t.id, t.status)}
+                            style={{
+                              backgroundColor: statusMap[t.status]?.bg, color: statusMap[t.status]?.color, border: `1px solid ${statusMap[t.status]?.border}`,
+                              padding: "4px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "bold", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px"
+                            }}
+                          >
+                            {statusMap[t.status]?.label} ▾
+                          </button>
+                          <span style={{ fontSize: "11px", color: "#94a3b8" }}>{t.due}</span>
+                          <button onClick={() => removeTask(t.id)} style={{ border: "none", backgroundColor: "transparent", color: "#cbd5e1", cursor: "pointer", fontSize: "14px" }}>✕</button>
                         </div>
                       </div>
-                      <span onClick={() => toggleStatus(t.id)} style={{ backgroundColor: statusMap[t.status]?.bg, color: statusMap[t.status]?.color, padding: "5px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "bold", cursor: "pointer" }}>
-                        {statusMap[t.status]?.label}
-                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* BIỂU ĐỒ HIỆU QUẢ KÊNH BÁN HÀNG NGANG */}
+                <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "12px", border: "1px solid #f1f5f9" }}>
+                  <h3 style={{ margin: "0 0 16px 0", fontSize: "14px", fontWeight: "bold" }}>📊 Hiệu quả kênh</h3>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+                    {channels.map((c, i) => (
+                      <div key={i}>
+                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", marginBottom: "4px" }}>
+                          <span style={{ fontWeight: "700", color: "#334155" }}>{c.name} <span style={{ fontWeight: "normal", color: "#94a3b8", fontSize: "11px" }}>({c.sub})</span></span>
+                          <span style={{ color: "#64748b", fontWeight: "bold" }}>{c.pct}%</span>
+                        </div>
+                        <div style={{ width: "100%", height: "6px", backgroundColor: "#f1f5f9", borderRadius: "3px", overflow: "hidden" }}>
+                          <div style={{ width: `${c.pct}%`, height: "100%", backgroundColor: c.color, borderRadius: "3px" }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* TAB QUY TRÌNH MARKETING */}
+            {activeTab === "quytrinh" && (
+              <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "12px", border: "1px solid #f1f5f9" }}>
+                <h3 style={{ margin: "0 0 12px 0", fontSize: "14px", fontWeight: "bold" }}>👑 Quy trình Trưởng phòng MKT</h3>
+                <div style={{ fontSize: "13px", lineHeight: "1.6", color: "#475569" }}>
+                  <strong>• Kiểm tra đầu ngày:</strong> Check báo cáo web, sàn, video kịch bản media, chi phí chạy ads trong 10-15 phút.<br/>
+                  <strong>• Phân bổ công việc:</strong> Giao chỉ tiêu bài đăng sàn, video TikTok, banner sale.<br/>
+                  <strong>• Kiểm soát cuối ngày:</strong> Tổng kết đối chiếu doanh số, tối ưu ngân sách quảng cáo tức thì.
+                </div>
+              </div>
+            )}
+
+            {/* TAB CHIẾN DỊCH */}
+            {activeTab === "campaigns" && (
+              <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "12px", border: "1px solid #f1f5f9" }}>
+                <h3 style={{ margin: "0 0 16px 0", fontSize: "14px", fontWeight: "bold" }}>🏁 Các chiến dịch tiếp thị</h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  {initCampaigns.map(cp => (
+                    <div key={cp.id} style={{ padding: "12px", border: "1px solid #f1f5f9", borderRadius: "8px", display: "flex", justifyContent: "space-between", fontSize: "13px" }}>
+                      <div>
+                        <strong>{cp.name}</strong> — <span style={{ color: "gray" }}>Kênh: {cp.channel}</span>
+                      </div>
+                      <span style={{ fontWeight: "bold", color: "#ff4d4f" }}>{cp.result}</span>
                     </div>
                   ))}
                 </div>
               </div>
+            )}
+          </div>
 
-              {/* HIỆU QUẢ KÊNH */}
-              <div style={{ flex: 1, backgroundColor: "white", padding: "20px", borderRadius: "12px", display: "flex", flexDirection: "column", gap: "15px" }}>
-                <h3 style={{ margin: 0, fontSize: "15px", color: "#1e293b" }}>📊 Hiệu quả kênh</h3>
-                {channels.map((c, idx) => (
-                  <div key={idx}>
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", marginBottom: "6px" }}>
-                      <span style={{ fontWeight: "bold", color: "#475569" }}>{c.name}</span>
-                      <span style={{ color: "#94a3b8" }}>{c.pct}%</span>
+          {/* CỘT BÊN PHẢI: THÀNH VIÊN VÀ ĐỒ THỊ HOẠT ĐỘNG 7 NGÀY */}
+          <div style={{ width: "260px", display: "flex", flexDirection: "column", gap: "16px" }}>
+            
+            {/* THÀNH VIÊN ONLINE SẮC NÉT */}
+            <div style={{ backgroundColor: "white", padding: "16px", borderRadius: "12px", border: "1px solid #f1f5f9" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px", fontSize: "12px", fontWeight: "bold" }}>
+                <span style={{ color: "#e3401c" }}>■ Nhân sự</span>
+                <span style={{ color: "#64748b" }}>■ Chat</span>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {members.map((m, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "12px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{ width: "26px", height: "26px", borderRadius: "50%", backgroundColor: m.color, color: m.textColor, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", fontSize: "10px" }}>{m.initials}</div>
+                      <div>
+                        <div style={{ fontWeight: "bold", color: "#1e293b" }}>{m.name}</div>
+                        <div style={{ color: "#94a3b8", fontSize: "10px" }}>{m.type}</div>
+                      </div>
                     </div>
-                    <div style={{ width: "100%", height: "6px", backgroundColor: "#f1f5f9", borderRadius: "3px", overflow: "hidden" }}>
-                      <div style={{ width: `${c.pct}%`, height: "100%", backgroundColor: c.color }} />
-                    </div>
+                    <span style={{ color: m.status === "online" ? "#22c55e" : "#eab308", fontSize: "10px" }}>● {m.status}</span>
                   </div>
                 ))}
               </div>
             </div>
-          </>
-        )}
 
-        {activeTab === "calendar" && (
-          <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "12px" }}>
-            <h3 style={{ margin: "0 0 15px 0", fontSize: "15px" }}>📅 Lịch trình sự kiện & Ca trực phòng MKT</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "12px" }}>
-              {calendarEvents.map((ev, i) => (
-                <div key={i} style={{ padding: "12px", backgroundColor: eventTypeStyle[ev.type]?.bg, borderLeft: `4px solid ${eventTypeStyle[ev.type]?.color}`, borderRadius: "4px" }}>
-                  <div style={{ fontSize: "11px", fontWeight: "bold", color: "#64748b" }}>{ev.date} — Nhân sự: {ev.member}</div>
-                  <div style={{ fontWeight: "bold", fontSize: "14px", marginTop: "4px", color: "#1e293b" }}>{ev.title}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {activeTab === "campaigns" && (
-          <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "12px" }}>
-            <h3 style={{ margin: "0 0 15px 0", fontSize: "15px" }}>🏁 Quản lý Chiến dịch Marketing</h3>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
-              <thead>
-                <tr style={{ borderBottom: "2px solid #f1f5f9", textAlign: "left", color: "#64748b" }}>
-                  <th style={{ padding: "10px" }}>Tên chiến dịch</th>
-                  <th>Kênh triển khai</th>
-                  <th>Ngân sách</th>
-                  <th>Đã chi</th>
-                  <th>Trạng thái</th>
-                </tr>
-              </thead>
-              <tbody>
-                {initCampaigns.map((cp) => (
-                  <tr key={cp.id} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                    <td style={{ padding: "12px 10px", fontWeight: "bold" }}>{cp.name}</td>
-                    <td>{cp.channel}</td>
-                    <td>{cp.budget}đ</td>
-                    <td>{cp.spent}đ</td>
-                    <td>
-                      <span style={{ backgroundColor: campaignStatusStyle[cp.status].bg, color: campaignStatusStyle[cp.status].color, padding: "3px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: "bold" }}>
-                        {campaignStatusStyle[cp.status].label}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {activeTab === "kpi" && (
-          <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "12px" }}>
-            <h3 style={{ margin: "0 0 15px 0", fontSize: "15px" }}>📈 Phân tích KPI & Báo cáo Chỉ số</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "15px" }}>
-              {analyticsKPI.map((kpi, idx) => (
-                <div key={idx} style={{ padding: "15px", border: "1px solid #f1f5f9", borderRadius: "8px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontSize: "18px" }}>{kpi.icon}</span>
-                    <span style={{ color: kpi.up ? "#16a34a" : "#dc2626", fontSize: "12px", fontWeight: "bold" }}>{kpi.change}</span>
+            {/* BIỂU ĐỒ HOẠT ĐỘNG 7 NGÀY (CỘT ĐỎ CAM THEO THIẾT KẾ MẪU) */}
+            <div style={{ backgroundColor: "white", padding: "16px", borderRadius: "12px", border: "1px solid #f1f5f9" }}>
+              <h4 style={{ margin: "0 0 12px 0", fontSize: "12px", fontWeight: "bold", color: "#64748b" }}>HOẠT ĐỘNG 7 NGÀY</h4>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end", height: "60px", padding: "0 10px" }}>
+                {[30, 45, 60, 80, 50, 95, 70].map((val, idx) => (
+                  <div key={idx} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+                    <div style={{ width: "12px", height: `${val}%`, backgroundColor: "#ff4d2d", borderRadius: "2px" }} />
+                    <span style={{ fontSize: "9px", color: "#94a3b8" }}>T{idx + 2}</span>
                   </div>
-                  <div style={{ color: "#64748b", fontSize: "12px", marginTop: "10px" }}>{kpi.label}</div>
-                  <div style={{ fontSize: "20px", fontWeight: "bold", marginTop: "4px" }}>{kpi.value} <span style={{ fontSize: "12px", fontWeight: "normal" }}>{kpi.unit}</span></div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
+
           </div>
-        )}
+
+        </div>
 
       </div>
 
-      {/* POPUP THÊM TASK MỚI CHẠY ĐƯỢC */}
+      {/* POPUP SÁNG TẠO COMPONENT THÊM TASK */}
       {showModal && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", backgroundColor: "rgba(0,0,0,0.4)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 999 }}>
-          <div style={{ backgroundColor: "white", padding: "24px", borderRadius: "12px", width: "380px", boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}>
-            <h3 style={{ margin: "0 0 16px 0", fontSize: "16px" }}>➕ Tạo công việc mới</h3>
+          <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "12px", width: "340px", border: "1px solid #e2e8f0" }}>
+            <h3 style={{ margin: "0 0 16px 0", fontSize: "14px", fontWeight: "bold" }}>➕ Tạo công việc mới</h3>
             <form onSubmit={handleAddTask}>
               <div style={{ marginBottom: "12px" }}>
-                <label style={{ display: "block", fontSize: "12px", color: "#64748b", marginBottom: "4px" }}>Tên công việc</label>
-                <input type="text" value={newTaskName} onChange={(e) => setNewTaskName(e.target.value)} placeholder="Nhập việc cần giao..." style={{ width: "93%", padding: "8px 10px", borderRadius: "6px", border: "1px solid #cbd5e1" }} required />
+                <input type="text" value={newTaskName} onChange={(e) => setNewTaskName(e.target.value)} placeholder="Nhập tên công việc..." style={{ width: "93%", padding: "8px 10px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px" }} required />
               </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", fontSize: "12px", color: "#64748b", marginBottom: "4px" }}>Nhân sự phụ trách</label>
-                <select value={newTaskAssignee} onChange={(e) => setNewTaskAssignee(e.target.value)} style={{ width: "100%", padding: "8px 10px", borderRadius: "6px", border: "1px solid #cbd5e1", backgroundColor: "white" }}>
+              <div style={{ marginBottom: "16px" }}>
+                <select value={newTaskAssignee} onChange={(e) => setNewTaskAssignee(e.target.value)} style={{ width: "100%", padding: "8px 10px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "13px", backgroundColor: "white" }}>
                   {members.map((m, i) => (
-                    <option key={i} value={m.name}>{m.name} ({m.role})</option>
+                    <option key={i} value={m.name}>{m.name}</option>
                   ))}
                 </select>
               </div>
               <div style={{ display: "flex", justifyContent: "end", gap: "8px" }}>
-                <button type="button" onClick={() => setShowModal(false)} style={{ padding: "7px 14px", borderRadius: "6px", border: "1px solid #cbd5e1", backgroundColor: "white", cursor: "pointer", fontSize: "13px" }}>Hủy</button>
-                <button type="submit" style={{ padding: "7px 14px", borderRadius: "6px", border: "none", backgroundColor: "#E2401C", color: "white", fontWeight: "bold", cursor: "pointer", fontSize: "13px" }}>Thêm ngay</button>
+                <button type="button" onClick={() => setShowModal(false)} style={{ padding: "6px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", backgroundColor: "white", fontSize: "12px", cursor: "pointer" }}>Hủy</button>
+                <button type="submit" style={{ padding: "6px 12px", borderRadius: "6px", border: "none", backgroundColor: "#ff4d4f", color: "white", fontWeight: "bold", fontSize: "12px", cursor: "pointer" }}>Thêm</button>
               </div>
             </form>
           </div>
